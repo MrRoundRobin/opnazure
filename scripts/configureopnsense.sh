@@ -60,12 +60,12 @@ sed -i "" 's/#PermitRootLogin no/PermitRootLogin yes/' /etc/ssh/sshd_config
 
 #OPNSense
 sed -i "" "s/reboot/shutdown -r +1/g" opnsense-bootstrap.sh.in
-sh ./opnsense-bootstrap.sh.in -y -r "22.1"
+sh ./opnsense-bootstrap.sh.in -y -r "22.7"
 
 # Add Azure waagent
-fetch https://github.com/Azure/WALinuxAgent/archive/refs/tags/v2.7.0.6.tar.gz
-tar -xvzf v2.7.0.6.tar.gz
-cd WALinuxAgent-2.7.0.6/
+fetch https://github.com/Azure/WALinuxAgent/archive/refs/tags/v2.8.0.11.tar.gz
+tar -xvzf v2.8.0.11.tar.gz
+cd WALinuxAgent-2.8.0.11/
 python3 setup.py install --register-service --lnx-distro=freebsd --force
 cd ..
 
