@@ -53,10 +53,15 @@ module trustedNic '../vnet/nic.bicep' = if(multiNicSupport){
   }
 }
 
-resource OPNsense 'Microsoft.Compute/virtualMachines@2021-03-01' = {
+resource OPNsense 'Microsoft.Compute/virtualMachines@2021-11-01' = {
   name: virtualMachineName
   location: Location
   properties: {
+    diagnosticsProfile: {
+      bootDiagnostics: {
+        enabled: true
+      }
+    }
     osProfile: {
       computerName: virtualMachineName
       adminUsername: TempUsername
