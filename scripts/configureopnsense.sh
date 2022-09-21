@@ -59,6 +59,7 @@ tar -xvzf v2.8.0.11.tar.gz
 cd WALinuxAgent-2.8.0.11/
 python3 setup.py install --register-service --lnx-distro=freebsd --force
 cd ..
+ln -s /usr/local/bin/python3.9 /usr/local/bin/python
 
 sed -i "" 's/ResourceDisk.EnableSwap=y/ResourceDisk.EnableSwap=n/' /etc/waagent.conf
 fetch $1actions_waagent.conf
