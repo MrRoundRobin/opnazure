@@ -19,7 +19,7 @@ if [ "$2" = "Primary" ]; then
     sed -i "" "s/www.www.www.www/$5/" config-active-active-primary.xml
     sed -i "" "s/xxx.xxx.xxx.xxx/$6/" config-active-active-primary.xml
     sed -i "" "s/<hostname>OPNsense<\/hostname>/<hostname>OPNsense-Primary<\/hostname>/" config-active-active-primary.xml
-    cp config-active-active-primary.xml /usr/local/etc/config.xml
+    mv config-active-active-primary.xml /usr/local/etc/config.xml
 elif [ "$2" = "Secondary" ]; then
     fetch $1config-active-active-secondary.xml
     fetch $1get_nic_gw.py
@@ -28,7 +28,7 @@ elif [ "$2" = "Secondary" ]; then
     sed -i "" "s_zzz.zzz.zzz.zzz_$4_" config-active-active-secondary.xml
     sed -i "" "s/www.www.www.www/$5/" config-active-active-secondary.xml
     sed -i "" "s/<hostname>OPNsense<\/hostname>/<hostname>OPNsense-Secondary<\/hostname>/" config-active-active-secondary.xml
-    cp config-active-active-secondary.xml /usr/local/etc/config.xml
+    mv config-active-active-secondary.xml /usr/local/etc/config.xml
 elif [ "$2" = "SingNic" ]; then
     fetch $1config-snic.xml
     cp config-snic.xml /usr/local/etc/config.xml
@@ -38,7 +38,7 @@ elif [ "$2" = "TwoNics" ]; then
     gwip=$(python get_nic_gw.py $3)
     sed -i "" "s/yyy.yyy.yyy.yyy/$gwip/" config.xml
     sed -i "" "s_zzz.zzz.zzz.zzz_$4_" config.xml
-    cp config.xml /usr/local/etc/config.xml
+    mv config.xml /usr/local/etc/config.xml
 fi
 
 # 1. Package to get root certificate bundle from the Mozilla Project (FreeBSD)
@@ -63,7 +63,6 @@ ln -s /usr/local/bin/python3.9 /usr/local/bin/python
 
 sed -i "" 's/ResourceDisk.EnableSwap=y/ResourceDisk.EnableSwap=n/' /etc/waagent.conf
 fetch $1actions_waagent.conf
-cp actions_waagent.conf /usr/local/opnsense/service/conf/actions.d
 
 # Remove wrong route at initialization
 #cat > /usr/local/etc/rc.syshook.d/start/22-remoteroute <<EOL
@@ -89,5 +88,7 @@ fetch https://raw.githubusercontent.com/opnsense/update/master/src/bootstrap/opn
 sed -i "" "s/reboot/shutdown -r +1/g" opnsense-bootstrap.sh.in
 sh ./opnsense-bootstrap.sh.in -y -r "22.7"
 
+mv actions_waagent.conf /usr/local/opnsense/service/conf/actions.d
+
 # Clean-up
-rm -rf WALinuxAgent-* actions_waagent.conf config*.xml opnsense-bootstrap.sh.in v*.tar.gz get_nic_gw.py
+rm -rf WALinuxAgent-* opnsense-bootstrap.sh.in v*.tar.gz get_nic_gw.py
